@@ -1,6 +1,9 @@
 defmodule Solution do
   def read_file() do
-    File.read!("input") |> String.trim() |> String.split("\n") |> Enum.map(&String.to_integer/1)
+    File.read!("input")
+    |> String.trim()
+    |> String.split("\n")
+    |> Enum.map(&String.to_integer/1)
   end
 
   def run(how_many, goal) do
@@ -19,8 +22,7 @@ defmodule Solution do
   def search(how_many, goal, [item | remaining_list]) when how_many == 2 do
     with true <- item < goal,
          final <- Enum.find(remaining_list, nil, fn x -> x == goal - item end),
-         true <- is_integer(final)
-    do
+         true <- is_integer(final) do
       [final, item]
     else
       _ -> search(how_many, goal, remaining_list)
@@ -30,8 +32,7 @@ defmodule Solution do
   def search(how_many, goal, [head | rest]) do
     with true <- head < goal,
          others <- search(how_many - 1, goal - head, rest),
-         true <- length(others) != 0
-    do
+         true <- length(others) != 0 do
       [head | others]
     else
       _ -> search(how_many, goal, rest)
