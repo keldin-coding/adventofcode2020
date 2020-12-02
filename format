@@ -1,0 +1,5 @@
+# Yet another one wanting ADVDAY set
+
+echo "Running for $ADVDAY"
+
+mix format "$ADVDAY/main.exs" "$ADVDAY/main_test.exs" "$ADVDAY/main_runner.exs"

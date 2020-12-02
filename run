@@ -1,0 +1,5 @@
+# This one is fun and expects me to set an environment variable with EXPORT
+
+echo "Running for $ADVDAY"
+
+elixir "$ADVDAY/runner.exs"

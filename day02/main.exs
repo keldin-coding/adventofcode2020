@@ -12,9 +12,10 @@ defmodule Password do
   end
 
   def valid?(%Password{} = password) do
-    count = password.value
-    |> String.codepoints()
-    |> Enum.count(fn x -> x == password.required_character end)
+    count =
+      password.value
+      |> String.codepoints()
+      |> Enum.count(fn x -> x == password.required_character end)
 
     Enum.member?(password.range, count)
   end
@@ -65,26 +66,17 @@ defmodule PasswordPart2 do
 end
 
 defmodule Solution do
-  def read_file() do
-    File.read!("input")
-    |> String.trim()
-    |> String.split("\n")
-  end
-
-  def run_part1() do
-    read_file()
+  def run_part1(input_list) when is_list(input_list) do
+    input_list
     |> Enum.count(fn line ->
       Password.parse(line) |> Password.valid?()
     end)
   end
 
-  def run_part2() do
-    read_file()
+  def run_part2(input_list) when is_list(input_list) do
+    input_list
     |> Enum.count(fn line ->
       PasswordPart2.parse(line) |> PasswordPart2.valid?()
     end)
   end
 end
-
-IO.puts("PART 1: Got the number of results: #{Solution.run_part1()}")
-IO.puts("PART 2: Got the number of results: #{Solution.run_part2()}")

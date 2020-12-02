@@ -1,0 +1,50 @@
+day_name="$1"
+
+echo "$day_name :: Creating directory"
+
+mkdir "$day_name"
+pushd "$day_name" > /dev/null
+
+echo "$day_name :: Creating empty input file"
+
+touch "input"
+
+echo "$day_name :: Creating main.exs"
+
+cat > "main.exs" << EndOfMain
+defmodule Solution do
+  def run_part1(input) do
+    input
+  end
+
+  def run_part2(input) do
+    input
+  end
+end
+EndOfMain
+
+echo "$day_name :: Creating runner.exs"
+
+cat > "runner.exs" << EndOfRunner
+Code.require_file("main.exs", "$day_name/")
+Code.require_file("advent_utils.exs")
+
+input = AdventUtils.read_and_split_file("$day_name/input")
+
+IO.puts("PART 1: Got the number of results: #{Solution.run_part1(input)}")
+IO.puts("PART 2: Got the number of results: #{Solution.run_part2(input)}")
+EndOfRunner
+
+echo "$day_name :: Creating main_test.exs"
+
+cat > "main_test.exs" << EndOfTest
+ExUnit.start()
+
+Code.require_file("main.exs", "$day_name/")
+EndOfTest
+
+echo "$day_name :: Back to root"
+
+popd > /dev/null
+
+export ADVDAY=$day_name
