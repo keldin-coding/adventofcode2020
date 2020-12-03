@@ -15,21 +15,18 @@ defmodule SnowMap do
     do_count_trees(map, right, down, 0, 0, 0)
   end
 
-  defp do_count_trees(map, right, down, right_pos, down_pos, trees) do
-    if down_pos >= map.height - 1 do
-      trees
+  defp do_count_trees(%SnowMap{height: map_height}, _, _, _, down_pos, trees) when down_pos >= map_height - 1, do: trees
+
+  defp do_count_trees(%SnowMap{} = map, right, down, right_pos, down_pos, trees) do
+    new_column = rem(right_pos + right, map.width)
+    new_row = down_pos + down
+
+    spot = map.rows |> Enum.at(new_row) |> Enum.at(new_column)
+
+    if spot == @tree do
+      do_count_trees(map, right, down, new_column, new_row, trees + 1)
     else
-      new_column = rem(right_pos + right, map.width)
-      new_row = down_pos + down
-
-      row = Enum.at(map.rows, new_row)
-      spot = Enum.at(row, new_column)
-
-      if spot == @tree do
-        do_count_trees(map, right, down, new_column, new_row, trees + 1)
-      else
-        do_count_trees(map, right, down, new_column, new_row, trees)
-      end
+      do_count_trees(map, right, down, new_column, new_row, trees)
     end
   end
 end
