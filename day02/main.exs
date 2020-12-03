@@ -51,9 +51,7 @@ defmodule PasswordPart2 do
     first = String.at(password.value, first_pos) == password.required_character
     second = String.at(password.value, second_pos) == password.required_character
 
-    # Elixir doesn't have a built in XOR as far as I can tell without doing
-    # arithmetic so here it is spelled out.
-    (first && !second) || (!first && second)
+    first != second
   end
 
   defp parse_position(position_string) do
