@@ -15,7 +15,9 @@ defmodule SnowMap do
     do_count_trees(map, right, down, 0, 0, 0)
   end
 
-  defp do_count_trees(%SnowMap{height: map_height}, _, _, _, down_pos, trees) when down_pos >= map_height - 1, do: trees
+  defp do_count_trees(%SnowMap{height: map_height}, _, _, _, down_pos, trees)
+       when down_pos >= map_height - 1,
+       do: trees
 
   defp do_count_trees(%SnowMap{} = map, right, down, right_pos, down_pos, trees) do
     new_column = rem(right_pos + right, map.width)
