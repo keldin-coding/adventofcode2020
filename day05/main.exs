@@ -2,7 +2,7 @@ defmodule AirplaneSeats do
   def seat_id(boarding_pass) do
     {row, seat} = String.split_at(boarding_pass, -3)
 
-    (row_number(row) * 8) + seat_number(seat)
+    row_number(row) * 8 + seat_number(seat)
   end
 
   # The _.._ are to pattern match and ensure we're getting Ranges since there
@@ -23,14 +23,20 @@ end
 
 defmodule Solution do
   def run_part1(input) do
-    input |> Enum.map(&AirplaneSeats.seat_id/1) |> Enum.max()
+    input |> map_to_seat_ids() |> Enum.max()
   end
 
   def run_part2(input) do
-    input |> Enum.map(&AirplaneSeats.seat_id/1) |> Enum.sort() |> find_my_seat()
+    input |> map_to_seat_ids() |> Enum.sort() |> find_my_seat()
   end
 
   defp find_my_seat([first, second | _rest]) when first + 2 == second, do: first + 1
   defp find_my_seat([_, second | rest]), do: find_my_seat([second | rest])
   defp find_my_seat([_only_one]), do: nil
+
+  defp map_to_seat_ids(input) do
+    tasks = Enum.map(input, fn x -> Task.async(fn -> AirplaneSeats.seat_id(x) end) end)
+
+    Enum.map(tasks, &Task.await/1)
+  end
 end
