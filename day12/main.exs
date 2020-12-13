@@ -41,7 +41,7 @@ defmodule Ship do
     %{ship | y: y - movement}
   end
 
-  def move(%Ship{x: x} = ship,  %Instruction{command: "E", value: movement}) do
+  def move(%Ship{x: x} = ship, %Instruction{command: "E", value: movement}) do
     %{ship | x: x + movement}
   end
 
@@ -49,7 +49,7 @@ defmodule Ship do
     %{ship | x: x - movement}
   end
 
-  def move(%Ship{} = ship,  %Instruction{command: "F"} = inst) do
+  def move(%Ship{} = ship, %Instruction{command: "F"} = inst) do
     move(ship, %{inst | command: ship_direction(ship)})
   end
 
@@ -87,31 +87,46 @@ defmodule ShipWithWaypoint do
     %{ship | waypoint: new_waypoint}
   end
 
-  def move(%ShipWithWaypoint{waypoint: waypoint} = ship, %Instruction{command: "N", value: movement}) do
+  def move(%ShipWithWaypoint{waypoint: waypoint} = ship, %Instruction{
+        command: "N",
+        value: movement
+      }) do
     new_waypoint = %{waypoint | y: waypoint.y + movement}
 
     %{ship | waypoint: new_waypoint}
   end
 
-  def move(%ShipWithWaypoint{waypoint: waypoint} = ship, %Instruction{command: "S", value: movement}) do
+  def move(%ShipWithWaypoint{waypoint: waypoint} = ship, %Instruction{
+        command: "S",
+        value: movement
+      }) do
     new_waypoint = %{waypoint | y: waypoint.y - movement}
 
     %{ship | waypoint: new_waypoint}
   end
 
-  def move(%ShipWithWaypoint{waypoint: waypoint} = ship, %Instruction{command: "E", value: movement}) do
+  def move(%ShipWithWaypoint{waypoint: waypoint} = ship, %Instruction{
+        command: "E",
+        value: movement
+      }) do
     new_waypoint = %{waypoint | x: waypoint.x + movement}
 
     %{ship | waypoint: new_waypoint}
   end
 
-  def move(%ShipWithWaypoint{waypoint: waypoint} = ship, %Instruction{command: "W", value: movement}) do
+  def move(%ShipWithWaypoint{waypoint: waypoint} = ship, %Instruction{
+        command: "W",
+        value: movement
+      }) do
     new_waypoint = %{waypoint | x: waypoint.x - movement}
 
     %{ship | waypoint: new_waypoint}
   end
 
-  def move(%ShipWithWaypoint{waypoint: waypoint} = ship, %Instruction{command: "F", value: movement}) do
+  def move(%ShipWithWaypoint{waypoint: waypoint} = ship, %Instruction{
+        command: "F",
+        value: movement
+      }) do
     %{ship | x: ship.x + movement * waypoint.x, y: ship.y + movement * waypoint.y}
   end
 
@@ -170,9 +185,7 @@ defmodule Solution do
       input
       |> Enum.map(&Instruction.parse/1)
       |> Enum.reduce(%Ship{facing_index: 1}, fn command, ship ->
-        new_ship = Ship.move(ship, command)
-
-        new_ship
+        Ship.move(ship, command)
       end)
 
     abs(result.x) + abs(result.y)
