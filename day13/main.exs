@@ -41,6 +41,10 @@ defmodule Solution do
   # sure what to search for.
   defp find_valid_starttime(bus_by_index) do
     Enum.reduce(bus_by_index, {0, 1}, fn {offset, id}, {sum, product} ->
+      # IO.puts "===== Tabulation so far - #{offset} for #{id}"
+      # IO.puts "Sum: #{sum}"
+      # IO.puts "Product: #{product}"
+
       new_sum = add_product_and_sum(sum, product, id, offset)
       new_product = product * id
 
